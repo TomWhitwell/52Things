@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>52-Thing-O-Matic</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <button id="randomButton">Tom, tell me a random thing you learned</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        let dataCache;
+
+        document.getElementById('randomButton').addEventListener('click', function() {
+            if (!dataCache) {
+                fetch('52.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        dataCache = data; // Cache the data
+                        startShuffling(data);
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                startShuffling(dataCache);
+            }
+        });
+
+        function startShuffling(data) {
+            let counter = 0;
+            let intervalTime = 10; // Starting interval time in milliseconds
+
+            const shuffle = () => {
+                if (counter < 22) {
+                    displayRandomEntry(data);
+                    counter++;
+                    intervalTime += counter; // Gradually increase interval time for smoother slowdown
+                    setTimeout(shuffle, intervalTime);
+                } else {
+                    displayFinalEntry(data);
+                }
+            };
+
+            shuffle();
+        }
+
+        function displayRandomEntry(data) {
+            const randomIndex = Math.floor(Math.random() * data.length);
+            const entry = data[randomIndex];
+            document.getElementById('output').innerHTML = `From ${entry['Year '].trim()}:<br> ${entry['Number '].trim()}. ${entry['Clean Text '].trim()} [<a href="${entry['URL '].trim()}">${entry['Byline '].trim()}</a>]`;
+        }
+
+        function displayFinalEntry(data) {
+            const randomIndex = Math.floor(Math.random() * data.length);
+            const entry = data[randomIndex];
+            document.getElementById('output').innerHTML = `From ${entry['Year '].trim()}:<br> ${entry['Number '].trim()}. ${entry['Clean Text '].trim()} [<a href="${entry['URL '].trim()}">${entry['Byline '].trim()}</a>]`;
+        }
+    </script>
+</body>
+</html>
