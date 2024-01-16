@@ -50,3 +50,11 @@ a:hover {
     /* existing styles */
     transition: all 0.5s ease-in-out;
 }
+#additionalInfo {
+    max-width: 700px; /* Same as the container width */
+    margin-left: auto;
+    margin-right: auto; /* Center align with the container */
+    margin-top: 20px; /* Space below the container */
+    font-size: 16px;
+    /* Add more styling as needed */
+}

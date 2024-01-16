@@ -13,9 +13,31 @@
     </div>
 
     <script>
+            const yearUrls = {
+        '2014': 'https://medium.com/@tomwhitwell/52-things-i-learned-in-2014-91fb546741cc',
+        '2015': 'https://medium.com/fluxx-studio-notes/52-things-i-learned-in-2015-c5c74eed24e0',
+        '2016': 'https://medium.com/fluxx-studio-notes/52-things-i-learned-in-2016-299fd1e6a62b',
+        '2017': 'https://medium.com/fluxx-studio-notes/52-things-i-learned-in-2017-d9fb0040bdcb', 
+        '2018': 'https://medium.com/fluxx-studio-notes/52-things-i-learned-in-2018-b07fc110d8e1', 
+        '2019': 'https://medium.com/fluxx-studio-notes/52-things-i-learned-in-2019-8ee483e6c816', 
+        '2020': 'https://medium.com/fluxx-studio-notes/52-things-i-learned-in-2020-6a380692dbb8', 
+        '2021': 'https://medium.com/magnetic/52-things-i-learned-in-2021-8481c4e0d409', 
+        '2022': 'https://medium.com/magnetic/52-things-i-learned-in-2022-db5fcd4aea6e', 
+        '2023': 'https://medium.com/magnetic/52-things-i-learned-in-2023-a3bbb9f9323d', 
+        
+    };
+
+        
         let dataCache;
 
         document.getElementById('randomButton').addEventListener('click', function() {
+            
+                    const additionalInfo = document.getElementById('additionalInfo');
+        if (additionalInfo) {
+            additionalInfo.remove();
+        }
+
+            
             if (!dataCache) {
                 fetch('52.json')
                     .then(response => response.json())
@@ -53,11 +75,28 @@
             document.getElementById('output').innerHTML = `From ${entry['Year '].trim()}:<br> ${entry['Number '].trim()}. ${entry['Clean Text '].trim()} [<a href="${entry['URL '].trim()}">${entry['Byline '].trim()}</a>]`;
         }
 
-        function displayFinalEntry(data) {
-            const randomIndex = Math.floor(Math.random() * data.length);
-            const entry = data[randomIndex];
-            document.getElementById('output').innerHTML = `From ${entry['Year '].trim()}:<br> ${entry['Number '].trim()}. ${entry['Clean Text '].trim()} [<a href="${entry['URL '].trim()}">${entry['Byline '].trim()}</a>]`;
-        }
+    function displayFinalEntry(data) {
+        const randomIndex = Math.floor(Math.random() * data.length);
+        const entry = data[randomIndex];
+        const yearLink = yearUrls[entry['Year '].trim()] || '#';
+        document.getElementById('output').innerHTML = `From <a href="${yearLink}" target="_blank">${entry['Year '].trim()}</a>:<br> ${entry['Number '].trim()}. ${entry['Clean Text '].trim()} [<a href="${entry['URL '].trim()}">${entry['Byline '].trim()}</a>]`;
+ 
+        setTimeout(() => {
+            const additionalContent = `
+                <div id="additionalInfo">
+                    <a href="https://medium.com/magnetic/52-things-i-learned-in-2023-a3bbb9f9323d">52 things I learned in 2023</a>. <br>Made by Tom Whitwell: <a href="mailto:tom.whitwell@gmail.com">Email</a>, <a href="https://www.linkedin.com/in/tomwhitwell/" target="_blank">Linkedin</a>.
+                </div>
+            `;
+            
+            const container = document.querySelector('.container');
+            container.insertAdjacentHTML('afterend', additionalContent); // Insert the additional content after the container
+        }, 1000); // Adjust the delay as needed
+    }
+    
+
+
+
+
     </script>
 </body>
 </html>
